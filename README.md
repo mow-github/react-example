@@ -23,6 +23,7 @@
 * `example010  - React / Redux / Redux-thunk: TODO app with Async actions / thunks`
 * `example011  - FIREBASE v3 part 1 + copy of the prev. example 010 TODO app`
 * `example012  - FIREBASE v3 part 2 ( listeners, sorting etc )`
+* `example013  - FIREBASE v3 part 3 ( working with auth )`
 
 
 `          | Links                      | webpage / github repo                                               |
