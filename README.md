@@ -21,7 +21,8 @@
 * `example008  - React / Redux TODO app ( CRUD + filter options )`
 * `example009  - React / Redux shopping cart`
 * `example010  - React / Redux / Redux-thunk: TODO app with Async actions / thunks`
-* `example011  - FIREBASE v3 + copy of the prev. example 010 TODO app`
+* `example011  - FIREBASE v3 part 1 + copy of the prev. example 010 TODO app`
+* `example012  - FIREBASE v3 part 2 ( listeners, sorting etc )`
 
 
 `          | Links                      | webpage / github repo                                               |
