@@ -370,3 +370,29 @@ export function getEmployees(){
       })
   }
 }
+
+
+
+// FIREBASE AUTH EXAMPLE
+
+export function userChanged(){
+  return function(dispatch){
+    return firebase.auth().onAuthStateChanged((user) => {
+      if(user){
+
+        dispatch({
+          type: actionType.SIGN_IN,
+          user
+        });
+
+      }else{
+
+        dispatch({
+          type: actionType.SIGN_OUT,
+          user: ""
+        });
+
+      }
+    })
+  }
+}

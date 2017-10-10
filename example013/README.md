@@ -6,9 +6,43 @@
 
 ###### Firebase v3 methods - syntax ( part 3 )
 
+* Prerequisite: activate email/password in the `Auth tab - in the firebase console view`
+* `Firebase console view: Users/add user` --> email and password (min. 6characters)
+
 ```
 
+// auth is saved in session / localstorage ( offline functionality )
 
+firebase
+    .auth()
+    .createUserWithEmailAndPassword(email,password)
+    .catch(error => {
+        // show friendly user error msg
+    })
+
+
+firebase
+    .auth()
+    .signInWithEmailAndPassword(email,password)
+    .catch(error => {
+        // show friendly user error msg
+    })
+
+
+firebase
+    .auth()
+    .onAuthStateChanged(user => {
+        if(user){
+            // Logged in
+        }else{
+            // denied in
+        }
+    })
+
+
+firebase
+    .auth()
+    .signOut()
 
 ```
 

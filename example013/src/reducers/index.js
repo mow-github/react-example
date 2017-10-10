@@ -5,6 +5,7 @@ import movies from './movies';
 import errors from './errors';
 import todos from './todosReducer';
 import loading from './loadingReducer';
+import users from './usersReducer';
 
 const rootReducer = combineReducers({
     cart,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     errors,
     todos,
     loading,
+    users,
 });
 
 export default rootReducer;

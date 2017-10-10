@@ -7,11 +7,19 @@ import { bindActionCreators } from 'redux';
 import Todos from "../Todos/Todos";
 import Input from "../Input/Input";
 
+import firebase from "../../firebase"
+
 import "./App.css";
 
 // import firebase from "firebase";
 
 class App extends Component {
+
+  state = {
+    email: "",
+    password: "",
+    user: null
+  };
 
   componentDidMount(){
     // this.props.actions.getTODO();
@@ -20,6 +28,19 @@ class App extends Component {
     this.props.actions.changeTodoListener();
 
    // this.props.actions.getEmployees(); // sort employee data
+
+
+    this.props.actions.userChanged();
+/*    firebase.auth().onAuthStateChanged((user) => {
+      if(user){
+        console.log(user);
+        this.setState({user})
+      }else{
+        this.setState({user: null});
+        console.log("no user");
+      }
+    })*/
+
   }
 
   postTODO   = (e) => {
@@ -52,6 +73,45 @@ class App extends Component {
     this.props.actions.updateTODO(todoID, newCompleted,newTodosMapped, text);
   };
 
+
+
+
+
+  onChange = e => this.setState({ [e.target.name]: e.target.value });
+
+  register = e => {
+    e.preventDefault();
+
+    const { email, password } = this.state;
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email,password)
+      .catch(error => {
+        // show friendly user error msg
+      })
+
+  };
+
+  signIn = e => {
+
+    const { email, password } = this.state;
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email,password)
+      .catch(error => {
+        console.log(error);
+        // show friendly user error msg
+      })
+
+  };
+
+  signOut = () => {
+    firebase.auth().signOut();
+
+  };
+
   render() {
 
     const errors = this.props.errors[0];
@@ -59,6 +119,19 @@ class App extends Component {
 
     return (
       <div className="App">
+
+
+        <form className="col-6" onSubmit={this.register}>
+          <input className="form-control" type="email" name="email" onChange={this.onChange} />
+          <input className="form-control" type="password" name="password" onChange={this.onChange} />
+          <input className="form-control" type="submit" value="Register" />
+        </form>
+        <button className="btn btn-primary" onClick={this.signOut} >Logout</button>
+        <button className="btn btn-primary" onClick={this.signIn}>Sign in</button>
+        {this.props.users && <h2 className="container">Logged in with: {this.props.users.uid}</h2>}
+
+
+
         {errors && <h2 className="container">{errors}</h2>}
 
         {!errors &&
@@ -82,6 +155,7 @@ function mapStateToProps(state) {
     todos: state.todos,
     errors: state.errors,
     loading: state.loading,
+    users: state.users,
   };
 }
 
