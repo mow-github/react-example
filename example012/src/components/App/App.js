@@ -14,7 +14,10 @@ import "./App.css";
 class App extends Component {
 
   componentDidMount(){
-    this.props.actions.getTODO();
+    // this.props.actions.getTODO();
+    this.props.actions.addTodoListener();
+    this.props.actions.removeTodoListener();
+    this.props.actions.changeTodoListener();
   }
 
   postTODO   = (e) => {

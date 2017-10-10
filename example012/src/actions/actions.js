@@ -150,6 +150,8 @@ export function updateTODO(todoID, newCompleted, newTodosMapped) {
 
 }
 */
+
+
 export function updateLoading(loadingValue) {
   return {
     type: actionType.UPDATE_LOADING,
@@ -210,27 +212,6 @@ export function removeTODO(todoID) {
   };
 
 }
-export function getTODO(){
-  return function(dispatch, getState){
-    firebase.database().ref("todos")
-      .on("value", (ss) => {
-
-        let tmpArray = [];
-        ss.forEach((child) => {
-            tmpArray.push( Object.assign({}, child.val(), {id: child.key} ) );
-        });
-        dispatch({
-          type: actionType.GET_TODOS,
-          todos: tmpArray
-        });
-
-        dispatch({
-          type: actionType.UPDATE_LOADING,
-          loadingValue: false
-        });
-      })
-  }
-}
 export function updateTODO(todoID, newCompleted, newTodosMapped,text) {
 
   return function(dispatch, getState){
@@ -251,4 +232,84 @@ export function updateTODO(todoID, newCompleted, newTodosMapped,text) {
       .catch(error =>dispatch({type: "FETCH_ERROR", error}))
   };
 
+}
+/*export function getTODO(){
+  return function(dispatch, getState){
+    firebase.database().ref("todos")
+      .on("value", (ss) => {
+
+        let tmpArray = [];
+        ss.forEach((child) => {
+          tmpArray.push( Object.assign({}, child.val(), {id: child.key} ) );
+        });
+        dispatch({
+          type: actionType.GET_TODOS,
+          todos: tmpArray
+        });
+
+        dispatch({
+          type: actionType.UPDATE_LOADING,
+          loadingValue: false
+        });
+      })
+  }
+}*/
+
+
+// FIREBASE PART 2 - listeners(child_added etc), sorting
+
+export function addTodoListener(){
+  return function(dispatch){
+    firebase.database().ref("todos")
+      .on("child_added", (ss) => {
+
+        const todo = {...ss.val(), id: ss.key};
+        dispatch({
+          type: actionType.GET_TODOS,
+          todos: todo
+        });
+        dispatch({
+          type: actionType.UPDATE_LOADING,
+          loadingValue: false
+        });
+
+      })
+  }
+}
+export function removeTodoListener(){
+  return function(dispatch){
+    firebase.database().ref("todos")
+      .on("child_removed", (ss) => {
+
+        const todoID = ss.key;
+        dispatch({
+          type: actionType.REMOVE_TODO,
+          todoID
+        });
+        dispatch({
+          type: actionType.UPDATE_LOADING,
+          loadingValue: false
+        });
+
+      })
+  }
+}
+export function changeTodoListener(){
+  return function(dispatch){
+    firebase.database().ref("todos")
+      .on("child_changed", (ss) => {
+
+        const todo = {...ss.val(), id: ss.key};
+        dispatch({
+          type: actionType.UPDATE_TODO,
+          todo
+        });
+
+        dispatch({
+          type: actionType.UPDATE_LOADING,
+          loadingValue: false
+        });
+
+      })
+  }
 }
