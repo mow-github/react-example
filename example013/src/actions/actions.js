@@ -377,16 +377,22 @@ export function getEmployees(){
 
 export function userChanged(){
   return function(dispatch){
+
+    // 1. GET user from firebase AUTH DB
+    // 2. make a "GET req from the "normal" DB.. fetch user"
+    // 3. dispatch and set redux user: user
+
     return firebase.auth().onAuthStateChanged((user) => {
       if(user){
 
-        dispatch({
-          type: actionType.SIGN_IN,
-          user
-        });
-
+        firebase.database().ref(`users/${user.uid}`).once("value")
+          .then((user) => {
+            dispatch({
+              type: actionType.SIGN_IN,
+              user
+            });
+          })
       }else{
-
         dispatch({
           type: actionType.SIGN_OUT,
           user: ""

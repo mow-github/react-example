@@ -87,6 +87,16 @@ class App extends Component {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email,password)
+      .then((user) => {
+        console.log( user );
+
+        const newUser = {
+          email: user.email,
+          isAdmin: false,
+        };
+        firebase.database().ref(`users/${user.uid}`).set(newUser);
+
+      })
       .catch(error => {
         // show friendly user error msg
       })
